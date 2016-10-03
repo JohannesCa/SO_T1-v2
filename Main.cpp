@@ -9,6 +9,7 @@
 #include <fstream>
 #include "Job.h"
 #include "FCFS.h"
+#include "SJF.h"
 
 using namespace std;
 
@@ -19,14 +20,16 @@ JobList LoadedJobsList;
 
 bool PrepareJobs(string fName);
 
+
 int main(int argc, char **argv)
 {
 	PrepareJobs("inputs");
 
 	Scheduler::FCFS fcfs(&LoadedJobsList);
-	Scheduler::
+	Scheduler::SJF sjf(&LoadedJobsList);
 
-	printf("FCFS %3.1f %3.1f", fcfs.getAvgWait(), fcfs.getAvgRet());
+	printf("FCFS %3.1f %3.1f\n", fcfs.getAvgWait(), fcfs.getAvgRet());
+	printf("FCFS %3.1f %3.1f\n", sjf.getAvgWait(), sjf.getAvgRet());
 
 	return 0;
 }
