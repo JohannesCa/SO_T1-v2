@@ -12,6 +12,7 @@ namespace Scheduler {
 bool BurstComp(Job* a, Job* b);
 bool CallComp(Job* a, Job* b);
 void Copy(JobList* a, JobList* src);
+void Clear(JobList* a);
 void pprint(JobList* a);
 
 SJF::SJF(JobList* in)
@@ -25,24 +26,24 @@ SJF::SJF(JobList* in)
 
 	/*** end sorting ***/
 
-	int n = this->_Joblist.size();
+	unsigned int n = this->_Joblist.size();
 
-	int WaitTime[n];
-	int RetTime[n];
-	int initTime = this->_Joblist[0]->getCall();
+	double WaitTime[n];
+	double RetTime[n];
+	double initTime = this->_Joblist[0]->getCall();
 
-	WaitTime[0] = 0;
+	WaitTime[0] = 0;//this->_Joblist[0]->getCall();
 	RetTime[0] = this->_Joblist[0]->getDuration();
 
-	for(int i = 1; i < n; ++i){
+	for(unsigned int i = 1; i < n; ++i){
 		WaitTime[i] = RetTime[i-1] > (this->_Joblist[i]->getCall() - initTime)? RetTime[i-1] : (this->_Joblist[i]->getCall() - initTime);
 		RetTime[i] = WaitTime[i] + this->_Joblist[i]->getDuration();
 	}
 
-	int WaitTimeSum = 0;
-	int RetTimeSum = 0;
+	double WaitTimeSum = 0;
+	double RetTimeSum = 0;
 
-	for(int i = 0; i < n; ++i){
+	for(unsigned int i = 0; i < n; ++i){
 		WaitTimeSum += WaitTime[i];
 		RetTimeSum += RetTime[i];
 	}
@@ -53,7 +54,7 @@ SJF::SJF(JobList* in)
 
 void SJF::Sort(void)
 {
-	printf("> Unsorted:\n");
+	//printf("> Unsorted:\n");
 	//this->print();
 
 	JobList CallOrd;  // Call Ordered
@@ -66,14 +67,43 @@ void SJF::Sort(void)
 	sort(CallOrd.begin(), CallOrd.end(), CallComp);
 	sort(BurstOrd.begin(), BurstOrd.end(), BurstComp);
 
-	pprint(&CallOrd);
-	pprint(&BurstOrd);
+	SJFList.push_back(CallOrd[0]);
 
-	SJFList[0] = CallOrd[0];
+	for(JobIt it = BurstOrd.begin(); it != BurstOrd.end(); ++it){
+		if(((*it)->getCall() == CallOrd[0]->getCall()) && ((*it)->getDuration() == CallOrd[0]->getDuration())){
+			BurstOrd.erase(it);
+			break;
+		}
+	}
+
 	CallOrd.erase(CallOrd.begin());
+/*
+	cout << endl;
+	pprint(&CallOrd);
+	cout << endl;
+	pprint(&BurstOrd);
+*/
+	JobIt ii = BurstOrd.begin();
+	int cur_time = SJFList[0]->getDuration();
 
+	while(!BurstOrd.empty()){
+		if((*ii)->getCall() <= cur_time){
+			SJFList.push_back(*ii);
+			BurstOrd.erase(ii);
+			cur_time += (*ii)->getDuration();
+			ii = BurstOrd.begin();
+		}else
+			++ii;
+	}
+
+	Copy(&this->_Joblist, &SJFList);
+
+	Clear(&CallOrd);
+	Clear(&BurstOrd);
+/*
 	printf("> Sorted:\n");
-	//this->print();
+	this->print();
+*/
 }
 
 SJF::~SJF()
@@ -105,7 +135,7 @@ bool CallComp(Job* a, Job* b)
 
 void Copy(JobList* a, JobList* src)
 {
-	a->clear();
+	Clear(a);
 	for(JobIt it = src->begin(); it != src->end(); ++it)
 		a->push_back(new Job(**it));
 }

@@ -23,13 +23,21 @@ bool PrepareJobs(string fName);
 
 int main(int argc, char **argv)
 {
-	PrepareJobs("inputs");
+	if(argc != 2){
+		cerr << ">> Use:\t$ ./so-t1-v2 <file name>\n\n";
+		return -1;
+	}
+
+	if(!PrepareJobs(argv[1])){
+		cerr << "[ERROR] The file '" << argv[1] << "' doesn't exist!\n";
+		return -1;
+	}
 
 	Scheduler::FCFS fcfs(&LoadedJobsList);
 	Scheduler::SJF sjf(&LoadedJobsList);
 
-	printf("FCFS %3.1f %3.1f\n", fcfs.getAvgWait(), fcfs.getAvgRet());
-	printf("FCFS %3.1f %3.1f\n", sjf.getAvgWait(), sjf.getAvgRet());
+	printf("FCFS %3.1f %3.1f\n", fcfs.getAvgRet(), fcfs.getAvgWait());
+	printf("SJF %3.1f %3.1f\n", sjf.getAvgRet(), sjf.getAvgWait());
 
 	return 0;
 }
