@@ -17,14 +17,27 @@ class Job {
 private:
 	int _duration;
 	int _call;
+
+	/** Exclusive use by RR **/
 	int _lastingTime;
+	int _waitTime = 0;
+	int _retTime = 0;
+	int _awsTime = 0;
 
 public:
 	Job(int start, int duration);
 	int getCall(void){return this->_call;};
 	int getDuration(void){return this->_duration;};
-	int getLating(void){return this->_lastingTime;};
+
+	/** Exclusive use by RR **/
+	int getLasting(void){return this->_lastingTime;};
 	bool decreaseTime(int i);
+	void setWait(int i){this->_waitTime = i;};
+	void setRet(int i){this->_retTime = i;};
+	void setAws(int i){this->_awsTime = i;};
+	int getWait(void){return this->_waitTime;};
+	int getRet(void){return this->_retTime;};
+	int getAws(void){return this->_awsTime;};
 };
 
 #endif /* JOB_H_ */

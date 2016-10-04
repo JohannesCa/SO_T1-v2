@@ -10,6 +10,7 @@
 #include "Job.h"
 #include "FCFS.h"
 #include "SJF.h"
+#include "RR.h"
 
 using namespace std;
 
@@ -32,12 +33,17 @@ int main(int argc, char **argv)
 		cerr << "[ERROR] The file '" << argv[1] << "' doesn't exist!\n";
 		return -1;
 	}
-
+/**/
 	Scheduler::FCFS fcfs(&LoadedJobsList);
 	Scheduler::SJF sjf(&LoadedJobsList);
 
+
 	printf("FCFS %3.1f %3.1f %3.1f\n", fcfs.getAvgRet(), fcfs.getAvgWait(), fcfs.getAvgWait());
 	printf("SJF %3.1f %3.1f %3.1f\n", sjf.getAvgRet(), sjf.getAvgWait(), sjf.getAvgWait());
+
+	Scheduler::RR rr(&LoadedJobsList, 2);
+	printf("RR %3.1f %3.1f %3.1f\n", rr.getAvgRet(), rr.getAvgWait(), rr.getAvgWait());
+
 
 	return 0;
 }

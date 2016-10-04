@@ -15,11 +15,11 @@ Job::Job(int start, int duration):
 	;
 }
 
-bool Job::decreaseTime(int d) // Return if the job was executed anytime
+bool Job::decreaseTime(int d) // Return if it's the first time the job is beeing executed
 {
-	bool WasExec = this->_duration != this->_lastingTime;
+	bool FirstTime = this->_duration == this->_lastingTime;
 
 	this->_lastingTime -= d < this->_lastingTime? d : this->_lastingTime;
 
-	return WasExec;
+	return FirstTime;
 }

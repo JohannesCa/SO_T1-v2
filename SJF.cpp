@@ -89,6 +89,7 @@ void SJF::Sort(void)
 			++ii;
 	}
 
+	Clear(&this->_Joblist);
 	Copy(&this->_Joblist, &SJFList);
 
 	Clear(&CallOrd);
@@ -122,7 +123,7 @@ bool CallComp(Job* a, Job* b)
 
 void Copy(JobList* a, JobList* src)
 {
-	Clear(a);
+	a->clear();
 	for(JobIt it = src->begin(); it != src->end(); ++it)
 		a->push_back(new Job(**it));
 }
