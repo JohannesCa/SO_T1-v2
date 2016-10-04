@@ -6,7 +6,7 @@ São esses:
 * SJF - Shortest Job First
 * RR - Round Robin
 
-Este é um projeto para a cadeira de Sistemas Operacionais I, ministrada pelo Prof. Fernando Matos, na Centro de Informática,  UFPB.
+Este é um projeto para a cadeira de Sistemas Operacionais I, ministrada pelo Prof. Fernando Matos, no Centro de Informática,  UFPB.
 
 ## Compilação
 
@@ -18,5 +18,4 @@ Para compilar o projeto faça:
 
 Para executar, faça a chamada do executável e logo em seguida o nome do arquivo com as inputs:
 
-> $ ./so-t1-v2 <nome_do_arquivo>
-
+> $ ./so-t1-v2 nome_do_arquivo
