@@ -14,3 +14,12 @@ Job::Job(int start, int duration):
 {
 	;
 }
+
+bool Job::decreaseTime(int d) // Return if the job was executed anytime
+{
+	bool WasExec = this->_duration != this->_lastingTime;
+
+	this->_lastingTime -= d < this->_lastingTime? d : this->_lastingTime;
+
+	return WasExec;
+}

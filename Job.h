@@ -13,8 +13,6 @@
 
 using namespace std;
 
-typedef struct timeval Time;
-
 class Job {
 private:
 	int _duration;
@@ -26,7 +24,7 @@ public:
 	int getCall(void){return this->_call;};
 	int getDuration(void){return this->_duration;};
 	int getLating(void){return this->_lastingTime;};
-	void decreaseTime(int i){this->_lastingTime -= i;};
+	bool decreaseTime(int i);
 };
 
 #endif /* JOB_H_ */

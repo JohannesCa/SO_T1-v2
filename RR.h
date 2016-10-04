@@ -1,12 +1,12 @@
 /*
- * FCFS.h
+ * RR.h
  *
- *  Created on: 2 de out de 2016
+ *  Created on: 3 de out de 2016
  *      Author: johannes
  */
 
-#ifndef FCFS_H_
-#define FCFS_H_
+#ifndef RR_H_
+#define RR_H_
 
 #include <iostream>
 #include <vector>
@@ -19,15 +19,18 @@ namespace Scheduler {
 typedef vector<Job*> JobList;
 typedef vector<Job*>::iterator JobIt;
 
-class FCFS {
+class RR {
 private:
 	JobList _Joblist;
+	int _quantum;
+
 	double _AvgWaitTime;
 	double _AvgRetTime;
 	double _AvgAwsTime;
+
 public:
-	FCFS(JobList* in);
-	~FCFS(void);
+	RR(JobList* in, int q);
+	~RR(void);
 
 	double getAvgWait(void){return this->_AvgWaitTime;};
 	double getAvgRet(void){return this->_AvgRetTime;};
@@ -36,4 +39,4 @@ public:
 
 } /* namespace Scheduler */
 
-#endif /* FCFS_H_ */
+#endif /* RR_H_ */

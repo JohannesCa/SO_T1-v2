@@ -25,6 +25,7 @@ private:
 	JobList _Joblist;
 	double _AvgWaitTime;
 	double _AvgRetTime;
+	double _AvgAwsTime;
 	void Sort(void);
 public:
 	SJF(JobList* in);
@@ -32,6 +33,7 @@ public:
 
 	double getAvgWait(void){return this->_AvgWaitTime;};
 	double getAvgRet(void){return this->_AvgRetTime;};
+	double getAwsRet(void){return this->_AvgAwsTime;};
 
 	void print(void);
 };

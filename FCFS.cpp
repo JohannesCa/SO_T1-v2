@@ -9,23 +9,27 @@
 
 namespace Scheduler {
 
+void Copy(JobList* a, JobList* src);
+void Clear(JobList* a);
+
 FCFS::FCFS(JobList* in)
 {
-	for(JobIt it = in->begin(); it != in->end(); ++it)
-		this->_Joblist.push_back(new Job(**it));
+	Copy(&this->_Joblist, in);
 
 	unsigned int n = this->_Joblist.size();
 
 	double WaitTime[n];
 	double RetTime[n];
-	double initTime = this->_Joblist[0]->getCall();
 
-	WaitTime[0] = 0;//this->_Joblist[0]->getCall();
+	WaitTime[0] = 0;
 	RetTime[0] = this->_Joblist[0]->getDuration();
 
+	int cur_time = RetTime[0] + this->_Joblist[0]->getCall();
+
 	for(unsigned int i = 1; i < n; ++i){
-		WaitTime[i] = RetTime[i-1] > (this->_Joblist[i]->getCall() - initTime)? RetTime[i-1] : (this->_Joblist[i]->getCall() - initTime);
-		RetTime[i] = WaitTime[i] + this->_Joblist[i]->getDuration();
+		WaitTime[i] = cur_time - this->_Joblist[i]->getCall();
+		cur_time += this->_Joblist[i]->getDuration();
+		RetTime[i] = cur_time - this->_Joblist[i]->getCall();
 	}
 
 	double WaitTimeSum = 0;
@@ -38,14 +42,12 @@ FCFS::FCFS(JobList* in)
 
 	this->_AvgWaitTime = WaitTimeSum/n;
 	this->_AvgRetTime = RetTimeSum/n;
+	this->_AvgAwsTime = this->_AvgRetTime;
 }
 
 FCFS::~FCFS()
 {
-	for(JobIt it = this->_Joblist.begin(); it != this->_Joblist.end(); ++it)
-		delete (*it);
-
-	this->_Joblist.clear();
+	Clear(&this->_Joblist);
 }
 
 } /* namespace Scheduler */

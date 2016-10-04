@@ -17,8 +17,7 @@ void pprint(JobList* a);
 
 SJF::SJF(JobList* in)
 {
-	for(JobIt it = in->begin(); it != in->end(); ++it)
-		this->_Joblist.push_back(new Job(**it));
+	Copy(&this->_Joblist, in);
 
 	/*** sort hereee ***/
 
@@ -30,14 +29,16 @@ SJF::SJF(JobList* in)
 
 	double WaitTime[n];
 	double RetTime[n];
-	double initTime = this->_Joblist[0]->getCall();
 
-	WaitTime[0] = 0;//this->_Joblist[0]->getCall();
+	WaitTime[0] = 0;
 	RetTime[0] = this->_Joblist[0]->getDuration();
 
+	int cur_time = RetTime[0] + this->_Joblist[0]->getCall();
+
 	for(unsigned int i = 1; i < n; ++i){
-		WaitTime[i] = RetTime[i-1] > (this->_Joblist[i]->getCall() - initTime)? RetTime[i-1] : (this->_Joblist[i]->getCall() - initTime);
-		RetTime[i] = WaitTime[i] + this->_Joblist[i]->getDuration();
+		WaitTime[i] = cur_time - this->_Joblist[i]->getCall();
+		cur_time += this->_Joblist[i]->getDuration();
+		RetTime[i] = cur_time - this->_Joblist[i]->getCall();
 	}
 
 	double WaitTimeSum = 0;
@@ -50,13 +51,11 @@ SJF::SJF(JobList* in)
 
 	this->_AvgWaitTime = WaitTimeSum/n;
 	this->_AvgRetTime = RetTimeSum/n;
+	this->_AvgAwsTime = this->_AvgRetTime;
 }
 
 void SJF::Sort(void)
 {
-	//printf("> Unsorted:\n");
-	//this->print();
-
 	JobList CallOrd;  // Call Ordered
 	JobList BurstOrd; // Burst Ordered
 	JobList SJFList;  // Shortest Job First List
@@ -75,14 +74,8 @@ void SJF::Sort(void)
 			break;
 		}
 	}
-
 	CallOrd.erase(CallOrd.begin());
-/*
-	cout << endl;
-	pprint(&CallOrd);
-	cout << endl;
-	pprint(&BurstOrd);
-*/
+
 	JobIt ii = BurstOrd.begin();
 	int cur_time = SJFList[0]->getDuration();
 
@@ -100,18 +93,11 @@ void SJF::Sort(void)
 
 	Clear(&CallOrd);
 	Clear(&BurstOrd);
-/*
-	printf("> Sorted:\n");
-	this->print();
-*/
 }
 
 SJF::~SJF()
 {
-	for(JobIt it = this->_Joblist.begin(); it != this->_Joblist.end(); ++it)
-		delete (*it);
-
-	this->_Joblist.clear();
+	Clear(&this->_Joblist);
 }
 
 void SJF::print(void)
@@ -119,6 +105,7 @@ void SJF::print(void)
 	for(unsigned int i = 0; i < this->_Joblist.size(); ++i)
 		printf("%i, %i\n", this->_Joblist[i]->getCall(), this->_Joblist[i]->getDuration());
 }
+
 
 bool BurstComp(Job* a, Job* b)
 {
@@ -152,6 +139,5 @@ void pprint(JobList* a)
 	for(unsigned int i = 0; i < a->size(); ++i)
 		printf("%i, %i\n", (*a)[i]->getCall(), (*a)[i]->getDuration());;
 }
-
 
 } /* namespace Scheduler */

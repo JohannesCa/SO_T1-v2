@@ -36,8 +36,8 @@ int main(int argc, char **argv)
 	Scheduler::FCFS fcfs(&LoadedJobsList);
 	Scheduler::SJF sjf(&LoadedJobsList);
 
-	printf("FCFS %3.1f %3.1f\n", fcfs.getAvgRet(), fcfs.getAvgWait());
-	printf("SJF %3.1f %3.1f\n", sjf.getAvgRet(), sjf.getAvgWait());
+	printf("FCFS %3.1f %3.1f %3.1f\n", fcfs.getAvgRet(), fcfs.getAvgWait(), fcfs.getAvgWait());
+	printf("SJF %3.1f %3.1f %3.1f\n", sjf.getAvgRet(), sjf.getAvgWait(), sjf.getAvgWait());
 
 	return 0;
 }
