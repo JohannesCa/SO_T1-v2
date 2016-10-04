@@ -1,5 +1,8 @@
 # Algoritmos de Escalonamento de CPU
 
+Autor: Johannes Cavalcante
+Matricula: 11400981
+
 Este consiste na implementação de um simulador dos Algoritmos de Escalonamento de CPU, que recebendo o tempo de chegada de um processo na fila de prontos e sua duração, calcula o tempo médio de Espera, Retorno e Resposta para cada um dos 3 algoritmos implementados.
 São esses:
 * FCFS - First Come First Served
