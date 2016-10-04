@@ -7,9 +7,10 @@
 
 #include "Job.h"
 
-Job::Job(int start, int duration):
-	_duration(duration),
+Job::Job(int pid, int start, int duration):
+	_PID(pid),
 	_call(start),
+	_duration(duration),
 	_lastingTime(duration)
 {
 	;
@@ -19,7 +20,7 @@ bool Job::decreaseTime(int d) // Return if it's the first time the job is beeing
 {
 	bool FirstTime = this->_duration == this->_lastingTime;
 
-	this->_lastingTime -= d < this->_lastingTime? d : this->_lastingTime;
+	this->_lastingTime -= d <= this->_lastingTime? d : 0;
 
 	return FirstTime;
 }

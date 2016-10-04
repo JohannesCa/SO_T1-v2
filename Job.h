@@ -15,8 +15,9 @@ using namespace std;
 
 class Job {
 private:
-	int _duration;
+	int _PID;
 	int _call;
+	int _duration;
 
 	/** Exclusive use by RR **/
 	int _lastingTime;
@@ -25,7 +26,7 @@ private:
 	int _awsTime = 0;
 
 public:
-	Job(int start, int duration);
+	Job(int pid, int start, int duration);
 	int getCall(void){return this->_call;};
 	int getDuration(void){return this->_duration;};
 
@@ -38,6 +39,7 @@ public:
 	int getWait(void){return this->_waitTime;};
 	int getRet(void){return this->_retTime;};
 	int getAws(void){return this->_awsTime;};
+	int getPID(void){return this->_PID;};
 };
 
 #endif /* JOB_H_ */

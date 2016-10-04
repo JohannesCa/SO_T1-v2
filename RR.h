@@ -34,7 +34,7 @@ public:
 
 	double getAvgWait(void){return this->_AvgWaitTime;};
 	double getAvgRet(void){return this->_AvgRetTime;};
-	double getAwsRet(void){return this->_AvgAwsTime;};
+	double getAvgAws(void){return this->_AvgAwsTime;};
 };
 
 } /* namespace Scheduler */

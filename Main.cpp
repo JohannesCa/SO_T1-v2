@@ -33,17 +33,14 @@ int main(int argc, char **argv)
 		cerr << "[ERROR] The file '" << argv[1] << "' doesn't exist!\n";
 		return -1;
 	}
-/**/
+
 	Scheduler::FCFS fcfs(&LoadedJobsList);
 	Scheduler::SJF sjf(&LoadedJobsList);
-
+	Scheduler::RR rr(&LoadedJobsList, 2);
 
 	printf("FCFS %3.1f %3.1f %3.1f\n", fcfs.getAvgRet(), fcfs.getAvgWait(), fcfs.getAvgWait());
 	printf("SJF %3.1f %3.1f %3.1f\n", sjf.getAvgRet(), sjf.getAvgWait(), sjf.getAvgWait());
-
-	Scheduler::RR rr(&LoadedJobsList, 2);
-	printf("RR %3.1f %3.1f %3.1f\n", rr.getAvgRet(), rr.getAvgWait(), rr.getAvgWait());
-
+	printf("RR %3.1f %3.1f %3.1f\n", rr.getAvgRet(), rr.getAvgAws(), rr.getAvgWait());
 
 	return 0;
 }
@@ -60,6 +57,7 @@ bool PrepareJobs(string fName) // Return if the file either exists or not
 	if(!input)
 		ret = false;
 	else{
+		int pid = 0;
 		while(getline(input, line)){
 			int i;
 			int beg, dur; // Begin, Duration
@@ -75,7 +73,7 @@ bool PrepareJobs(string fName) // Return if the file either exists or not
 				Buff += line[i];
 
 			dur = stoi(Buff);
-			LoadedJobsList.push_back(new Job(beg, dur));
+			LoadedJobsList.push_back(new Job(pid++, beg, dur));
 		}
 	}
 
